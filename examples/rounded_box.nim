@@ -25,7 +25,7 @@ proc dropShadow(sd: float32, stdDevFactor: float32, spread: float32, factor: flo
   let sdP = sd - spread + 1
   let x = sdP / (factor + 0.5)
   let f = gaussian(x, s)
-  return f
+  return min(f, 1.0)
 
 proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, posColor: Uniform[Vec4], negColor: Uniform[Vec4], time: Uniform[float32]) =
   # Center the UV coordinates
@@ -41,7 +41,7 @@ proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, posColor: Uniform[Vec4], ne
   
   # Color based on distance
   if d < 0.0:
-    fragColor.a = 10 * dropShadow(d, stdDevFactor=1.0/2.2, spread=10.0, factor=10.0)
+    fragColor.a = 0.1 * dropShadow(d, stdDevFactor=1.0/2.2, spread=10.0, factor=10.0)
   else:
     fragColor = negColor
 
