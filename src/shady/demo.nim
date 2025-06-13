@@ -90,20 +90,9 @@ proc start(title, vertexShaderText, fragmentShaderText: string, pos: Vec4, neg: 
 
   glEnableVertexAttribArray(vPosLocation.GLuint)
 
-  # glVertexAttribPointer(
-  #   posLocation.GLuint,
-  #   4,
-  #   cGL_FLOAT,
-  #   GL_FALSE,
-  #   0.GLsizei,
-  #   pos.unsafeAddr
-  # )
-  # glEnableVertexAttribArray(posLocation.GLuint)
-  glUniform4f(posColorLocation, pos.x, pos.y, pos.z, pos.w)
-
   startTime = epochTime()
 
-proc display() =
+proc display(pos, neg: Vec4) =
   var ratio: float32
 
   ratio = window.size.x.float32 / window.size.x.float32
@@ -114,12 +103,14 @@ proc display() =
   glUseProgram(program)
   let now = epochTime() - startTime
   glUniform1f(timeLocation, now.float32)
+  glUniform4f(posColorLocation, pos.x, pos.y, pos.z, pos.w)
+
   glDrawArrays(GL_TRIANGLES, 0, 6)
 
   # Swap buffers (this will display the red color)
   window.swapBuffers()
 
-proc run*(title, shader: string, pos: Vec4 = vec4(0.0, 0.0, 0.0, 0.0), neg: Vec4 = vec4(0.0, 0.0, 0.0, 0.0)) =
+proc run*(title, shader: string, pos: Vec4 = vec4(1.0, 1.0, 1.0, 1.0), neg: Vec4 = vec4(0.0, 0.0, 0.0, 1.0)) =
 
   proc basicVert(
     gl_Position: var Vec4,
@@ -137,5 +128,5 @@ proc run*(title, shader: string, pos: Vec4 = vec4(0.0, 0.0, 0.0, 0.0), neg: Vec4
 
 
   while not window.closeRequested:
-    display()
+    display(pos, neg)
     pollEvents()
