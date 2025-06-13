@@ -99,7 +99,7 @@ proc display(pos, neg: Vec4) =
 
   ratio = window.size.x.float32 / window.size.x.float32
   glViewport(0, 0, window.size.x, window.size.y)
-  glClearColor(0, 0, 0, 1)
+  glClearColor(0.3, 0.3, 0.3, 1)
   glClear(GL_COLOR_BUFFER_BIT)
 
   glUseProgram(program)
