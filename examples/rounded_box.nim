@@ -16,6 +16,16 @@ func sdRoundedBox*(p: Vec2, b: Vec2, r: Vec4): float32 =
   let q = abs(p) - b + vec2(cornerRadius.x, cornerRadius.x)
   
   result = min(max(q.x, q.y), 0.0) + length(max(q, vec2(0.0, 0.0))) - cornerRadius.x
+ 
+proc gaussian(x: float32, s: float32): float32 =
+  result = 1 / (s * sqrt(2 * PI)) * exp(-1 * x^2 / (2 * s^2))
+
+proc dropShadow(sd: float32, stdDevFactor: float32, spread: float32, factor: float32, c: var Vec4) = 
+  let s = stdDevFactor
+  let sd = sd - spread + 1
+  let x = sd / (factor + 0.5)
+  let f = 1.1 * gaussian(x, s)
+  c.a = if sd > 0.0: min(f, 1.0) else: 1.0
 
 proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, time: Uniform[float32]) =
   # Center the UV coordinates
@@ -27,6 +37,8 @@ proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, time: Uniform[float32]) =
   
   # Calculate distance
   let d = sdRoundedBox(p, boxSize, radius)
+
+  dropShadow(d, 1.0, 1.0, 1.0, fragColor)
   
   # Color based on distance
   if d < 0.0:
