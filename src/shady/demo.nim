@@ -14,6 +14,8 @@ let
 var
   program: GLuint
   vPosLocation: GLint
+  posLocation: GLint
+  negLocation: GLint
   timeLocation: GLint
   window: windex.Window
   startTime: float64
@@ -61,6 +63,8 @@ proc start(title, vertexShaderText, fragmentShaderText: string) =
   glLinkProgram(program)
 
   vPosLocation = glGetAttribLocation(program, "vPos")
+  posLocation = glGetAttribLocation(program, "pos")
+  negLocation = glGetAttribLocation(program, "neg")
   timeLocation = glGetUniformLocation(program, "time")
 
   glGenVertexArrays(1, vertexArrayId.addr)
@@ -104,7 +108,7 @@ proc display() =
   # Swap buffers (this will display the red color)
   window.swapBuffers()
 
-proc run*(title, shader: string) =
+proc run*(title, shader: string, pos: Vec4 = vec4(0.0, 0.0, 0.0, 0.0), neg: Vec4 = vec4(0.0, 0.0, 0.0, 0.0)) =
 
   proc basicVert(
     gl_Position: var Vec4,
@@ -119,6 +123,12 @@ proc run*(title, shader: string) =
     vertexShaderText = toGLSL(basicVert)
 
   start(title, vertexShaderText, shader)
+
+  glVertexAttribPointer(posLocation.GLuint, 4, cGL_FLOAT, GL_FALSE, 0.GLsizei, nil)
+  glVertexAttribPointer(negLocation.GLuint, 4, cGL_FLOAT, GL_FALSE, 0.GLsizei, nil)
+  glEnableVertexAttribArray(posLocation.GLuint)
+  glEnableVertexAttribArray(negLocation.GLuint)
+
 
   while not window.closeRequested:
     display()
