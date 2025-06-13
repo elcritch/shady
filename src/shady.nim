@@ -390,9 +390,9 @@ proc toCode(n: NimNode, res: var string, level = 0) =
 
   of nnkEmpty, nnkNilLit, nnkDiscardStmt, nnkPragma:
     # Skip all nil, empty and discard statements.
-    res.addIndent level
-    res.add "discard"
-    res.addSmart ';'
+    # res.addIndent level
+    # res.add "discard"
+    # res.addSmart ';'
     discard
 
   of nnkIntLit .. nnkInt64Lit:
