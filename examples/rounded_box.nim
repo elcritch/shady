@@ -49,6 +49,6 @@ proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, posColor: Uniform[Vec4], ne
 var shader = toGLSL(roundedBoxShader)
 echo shader
 
-let pos = vec4(1.0, 0.5, 0.2, 1.0)
-let neg = vec4(0.0, 0.0, 0.8, 1.0)
+let pos = vec4(1.0, 0.5, 0.2, 0.8)
+let neg = vec4(0.0, 0.0, 0.8, 0.8)
 run("Rounded Box", shader, pos, neg)
