@@ -42,6 +42,7 @@ proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, posColor: Uniform[Vec4], ne
   # Color based on distance
   if sd < 0.0:
     fragColor = posColor
+    discard
   else:
     fragColor = negColor
     let f = min(1.0, dropShadow(sd, stdDevFactor=1.0/2.2, spread=10.0, factor=10.0))
