@@ -28,7 +28,7 @@ proc dropShadow(sd: float32, stdDevFactor: float32, spread: float32, factor: flo
   # c.a = if sdP > 0.0: min(f, 1.0) else: 1.0
   c.a = 1.0
 
-proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, time: Uniform[float32]) =
+proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, posColor: Uniform[Vec4], time: Uniform[float32]) =
   # Center the UV coordinates
   let p = uv - vec2(0, 0)
   

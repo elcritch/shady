@@ -14,12 +14,13 @@ let
 var
   program: GLuint
   vPosLocation: GLint
-  posLocation: GLint
-  negLocation: GLint
   timeLocation: GLint
   window: windex.Window
   startTime: float64
   vertexArrayId: GLuint
+
+var
+  posColorLocation: GLint
 
 proc checkError*(shader: GLuint) =
   var code: GLint
@@ -64,8 +65,7 @@ proc start(title, vertexShaderText, fragmentShaderText: string, pos: Vec4, neg: 
 
   vPosLocation = glGetAttribLocation(program, "vPos")
   timeLocation = glGetUniformLocation(program, "time")
-  posLocation = glGetAttribLocation(program, "pos")
-  negLocation = glGetAttribLocation(program, "neg")
+  posColorLocation = glGetUniformLocation(program, "posColor")
 
   glGenVertexArrays(1, vertexArrayId.addr)
   glBindVertexArray(vertexArrayId)
@@ -90,16 +90,16 @@ proc start(title, vertexShaderText, fragmentShaderText: string, pos: Vec4, neg: 
 
   glEnableVertexAttribArray(vPosLocation.GLuint)
 
-  glVertexAttribPointer(
-    posLocation.GLuint,
-    4,
-    cGL_FLOAT,
-    GL_FALSE,
-    0.GLsizei,
-    pos.unsafeAddr
-  )
-
-  glEnableVertexAttribArray(posLocation.GLuint)
+  # glVertexAttribPointer(
+  #   posLocation.GLuint,
+  #   4,
+  #   cGL_FLOAT,
+  #   GL_FALSE,
+  #   0.GLsizei,
+  #   pos.unsafeAddr
+  # )
+  # glEnableVertexAttribArray(posLocation.GLuint)
+  glUniform4f(posColorLocation, pos.x, pos.y, pos.z, pos.w)
 
   startTime = epochTime()
 
@@ -125,7 +125,6 @@ proc run*(title, shader: string, pos: Vec4 = vec4(0.0, 0.0, 0.0, 0.0), neg: Vec4
     gl_Position: var Vec4,
     uv: var Vec2,
     vPos: Vec3,
-    pos: Attribute[Vec4],
   ) =
     gl_Position = vec4(vPos.x, vPos.y, 0.0, 1.0)
     uv.x = gl_Position.x * 500
