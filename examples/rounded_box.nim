@@ -41,12 +41,12 @@ proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, posColor: Uniform[Vec4], ne
   # Color based on distance
   if d < 0.0:
     fragColor = posColor
-    let f = min(1.0, 1.0 * dropShadow(d, stdDevFactor=1.0/2.2, spread=10.0, factor=10.0))
+    let f = min(1.0, 100.0 * dropShadow(d, stdDevFactor=1.0/2.2, spread=10.0, factor=10.0))
     fragColor.a = f
     if f < 0.01:
-      fragColor = vec4(0.0, 1.0, 0.0, 1.0)
+      fragColor = vec4(0.0, 1.0, 0.0, f)
     else:
-      fragColor = vec4(1.0, 0.0, 0.0, 1.0)
+      fragColor = vec4(1.0, 0.0, 0.0, f)
   else:
     fragColor = negColor
 
@@ -54,6 +54,6 @@ proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, posColor: Uniform[Vec4], ne
 var shader = toGLSL(roundedBoxShader)
 echo shader
 
-let pos = vec4(1.0, 0.5, 0.2, 0.8)
-let neg = vec4(0.0, 0.0, 0.8, 0.8)
+let pos = vec4(1.0, 0.5, 0.2, 1.0)
+let neg = vec4(1.0, 1.0, 1.0, 1.0)
 run("Rounded Box", shader, pos, neg)
