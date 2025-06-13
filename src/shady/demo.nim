@@ -31,7 +31,7 @@ proc checkError*(shader: GLuint) =
     glGetShaderInfoLog(shader, length, nil, log)
     echo log
 
-proc start(title, vertexShaderText, fragmentShaderText: string) =
+proc start(title, vertexShaderText, fragmentShaderText: string, pos: Vec4, neg: Vec4) =
 
   window = newWindow(
     title = title,
@@ -63,9 +63,9 @@ proc start(title, vertexShaderText, fragmentShaderText: string) =
   glLinkProgram(program)
 
   vPosLocation = glGetAttribLocation(program, "vPos")
+  timeLocation = glGetUniformLocation(program, "time")
   posLocation = glGetAttribLocation(program, "pos")
   negLocation = glGetAttribLocation(program, "neg")
-  timeLocation = glGetUniformLocation(program, "time")
 
   glGenVertexArrays(1, vertexArrayId.addr)
   glBindVertexArray(vertexArrayId)
@@ -90,6 +90,17 @@ proc start(title, vertexShaderText, fragmentShaderText: string) =
 
   glEnableVertexAttribArray(vPosLocation.GLuint)
 
+  glVertexAttribPointer(
+    posLocation.GLuint,
+    4,
+    cGL_FLOAT,
+    GL_FALSE,
+    0.GLsizei,
+    pos.unsafeAddr
+  )
+
+  glEnableVertexAttribArray(posLocation.GLuint)
+
   startTime = epochTime()
 
 proc display() =
@@ -113,7 +124,8 @@ proc run*(title, shader: string, pos: Vec4 = vec4(0.0, 0.0, 0.0, 0.0), neg: Vec4
   proc basicVert(
     gl_Position: var Vec4,
     uv: var Vec2,
-    vPos: Vec3
+    vPos: Vec3,
+    pos: Attribute[Vec4],
   ) =
     gl_Position = vec4(vPos.x, vPos.y, 0.0, 1.0)
     uv.x = gl_Position.x * 500
@@ -122,12 +134,7 @@ proc run*(title, shader: string, pos: Vec4 = vec4(0.0, 0.0, 0.0, 0.0), neg: Vec4
   const
     vertexShaderText = toGLSL(basicVert)
 
-  start(title, vertexShaderText, shader)
-
-  glVertexAttribPointer(posLocation.GLuint, 4, cGL_FLOAT, GL_FALSE, 0.GLsizei, nil)
-  glVertexAttribPointer(negLocation.GLuint, 4, cGL_FLOAT, GL_FALSE, 0.GLsizei, nil)
-  glEnableVertexAttribArray(posLocation.GLuint)
-  glEnableVertexAttribArray(negLocation.GLuint)
+  start(title, vertexShaderText, shader, pos, neg)
 
 
   while not window.closeRequested:
