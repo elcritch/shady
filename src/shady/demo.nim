@@ -37,7 +37,7 @@ proc start(title, vertexShaderText, fragmentShaderText: string, pos: Vec4, neg: 
 
   window = newWindow(
     title = title,
-    size = ivec2(500, 500),
+    size = ivec2(2000, 2000),
     visible = true
   )
   # Connect the GL context.
