@@ -21,6 +21,7 @@ var
 
 var
   posColorLocation: GLint
+  negColorLocation: GLint
 
 proc checkError*(shader: GLuint) =
   var code: GLint
@@ -66,6 +67,7 @@ proc start(title, vertexShaderText, fragmentShaderText: string, pos: Vec4, neg: 
   vPosLocation = glGetAttribLocation(program, "vPos")
   timeLocation = glGetUniformLocation(program, "time")
   posColorLocation = glGetUniformLocation(program, "posColor")
+  negColorLocation = glGetUniformLocation(program, "negColor")
 
   glGenVertexArrays(1, vertexArrayId.addr)
   glBindVertexArray(vertexArrayId)
@@ -104,6 +106,7 @@ proc display(pos, neg: Vec4) =
   let now = epochTime() - startTime
   glUniform1f(timeLocation, now.float32)
   glUniform4f(posColorLocation, pos.x, pos.y, pos.z, pos.w)
+  glUniform4f(negColorLocation, neg.x, neg.y, neg.z, neg.w)
 
   glDrawArrays(GL_TRIANGLES, 0, 6)
 
