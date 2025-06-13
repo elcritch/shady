@@ -18,7 +18,7 @@ func sdRoundedBox*(p: Vec2, b: Vec2, r: Vec4): float32 =
   result = min(max(q.x, q.y), 0.0) + length(max(q, vec2(0.0, 0.0))) - cornerRadius.x
  
 proc gaussian(x: float32, s: float32): float32 =
-  result = 1 / (s * sqrt(2 * PI)) * exp(-1 * x^2 / (2 * s^2))
+  result = 1 / (s * sqrt(2 * PI)) * exp(-1 * pow(x, 2) / (2 * pow(s, 2)))
 
 proc dropShadow(sd: float32, stdDevFactor: float32, spread: float32, factor: float32, c: var Vec4) = 
   let s = stdDevFactor
