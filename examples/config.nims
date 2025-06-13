@@ -1,0 +1,2 @@
+--path:"../src"
+--passc:"-Wno-incompatible-function-pointer-types"
