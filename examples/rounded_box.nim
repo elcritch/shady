@@ -45,7 +45,7 @@ proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, posColor: Uniform[Vec4], ne
   else:
     fragColor = negColor
     let f = min(1.0, dropShadow(sd, stdDevFactor=1.0/2.2, spread=10.0, factor=10.0))
-    fragColor = mix(negColor, posColor, f)
+    fragColor = mix(posColor, negColor, f)
 
 # Compile to a GPU shader:
 var shader = toGLSL(roundedBoxShader)
