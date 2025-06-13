@@ -1,11 +1,21 @@
 import chroma, shady, shady/demo, vmath
 
-proc sdRoundedBox(p: Vec2, b: Vec2, r: Vec4): float32 =
-  var r2 = r * 1.0
-  r2.xy = if p.x > 0.0: r.xy else: r.zw
-  r2.x = if p.y > 0.0: r2.x else: r2.y
-  let q = abs(p) - b + r2.x
-  return min(max(q.x, q.y), 0.0) + length(max(q, vec2(0.0))) - r2.x
+func sdRoundedBox*(p: Vec2, b: Vec2, r: Vec4): float32 =
+  ## Signed distance function for a rounded box
+  ## p: point to test
+  ## b: box half-extents (width/2, height/2)
+  ## r: corner radii as Vec4 (x=top-right, y=bottom-right, z=bottom-left, w=top-left)
+  ## Returns: signed distance (negative inside, positive outside)
+  var cornerRadius = r
+  
+  # Select appropriate corner radius based on quadrant
+  cornerRadius.xy = if p.x > 0.0: r.xy else: r.zw
+  cornerRadius.x = if p.y > 0.0: cornerRadius.x else: cornerRadius.y
+  
+  # Calculate distance
+  let q = abs(p) - b + vec2(cornerRadius.x, cornerRadius.x)
+  
+  result = min(max(q.x, q.y), 0.0) + length(max(q, vec2(0.0, 0.0))) - cornerRadius.x
 
 proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, time: Uniform[float32]) =
   # Center the UV coordinates
