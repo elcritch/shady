@@ -52,5 +52,5 @@ var shader = toGLSL(roundedBoxShader)
 echo shader
 
 let pos = vec4(1.0, 0.5, 0.2, 1.0)
-let neg = vec4(0.0, 1.0, 0.0, 1.0)
+let neg = vec4(0.3, 0.3, 0.3, 1.0)
 run("Rounded Box", shader, pos, neg) 
