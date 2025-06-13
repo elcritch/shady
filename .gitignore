@@ -9,3 +9,5 @@ nimcache
 *.pdb
 *.ilk
 .*
+/deps
+nim.cfg
