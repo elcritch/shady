@@ -1,6 +1,6 @@
 ## Inspired by https://www.shadertoy.com/
 
-import opengl, shady, windy, times, vmath
+import opengl, shady, windex, times, vmath
 let
   vertices: seq[float32] = @[
     -1f, -1f, #1.0f, 0.0f, 0.0f,
@@ -15,7 +15,7 @@ var
   program: GLuint
   vPosLocation: GLint
   timeLocation: GLint
-  window: Window
+  window: windex.Window
   startTime: float64
   vertexArrayId: GLuint
 

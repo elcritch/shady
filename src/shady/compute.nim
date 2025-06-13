@@ -1,4 +1,4 @@
-import macros, opengl, shady, windy, strformat, strutils, vmath
+import macros, opengl, shady, windex, strformat, strutils, vmath
 
 macro compute*(n: typed) =
   echo n.repr
@@ -20,7 +20,7 @@ macro compute*(n: typed) =
 
 var
   windowInitialized = false
-  window: Window
+  window: windex.Window
 proc initOffscreenWindow*(size = ivec2(100, 100)) =
   ## Makes sure there is an off screen openGL window.
   if windowInitialized == false:
@@ -29,7 +29,7 @@ proc initOffscreenWindow*(size = ivec2(100, 100)) =
       size = size,
       # style = Undecorated,
       visible = false,
-      openglVersion = OpenGL4Dot5
+      openglVersion = OpenGL4Dot1
     )
     window.makeContextCurrent()
     loadExtensions()
