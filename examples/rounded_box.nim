@@ -32,8 +32,9 @@ proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, posColor: Uniform[Vec4], ne
   # Center the UV coordinates
   let p = uv - vec2(0, 0)
   
+  # fragColor = posColor
   # Box size and corner radius
-  let boxSize = vec2(200.0, 100.0)
+  let boxSize = vec2(50.0, 50.0)
   let radius = vec4(20.0, 20.0, 20.0, 20.0)  # All corners have same radius
   
   # Calculate distance

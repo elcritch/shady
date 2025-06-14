@@ -1,15 +1,19 @@
 ## Inspired by https://www.shadertoy.com/
-
+import std/sequtils
 import opengl, shady, windex, times, vmath
 let
   vertices: seq[float32] = @[
-    -1f, -1f, #1.0f, 0.0f, 0.0f,
-    +1f, -1f, #0.0f, 1.0f, 0.0f,
-    +1f, +1f, #0.0f, 0.0f, 1.0f,
-    +1f, +1f, #1.0f, 0.0f, 0.0f,
-    -1f, +1f, #0.0f, 1.0f, 0.0f,
-    -1f, -1f, #0.0f, 0.0f, 1.0f
-  ]
+    # First rectangle
+    -1f, -1f, +1f,
+    -1f, +1f, +1f,
+    +1f, +1f, -1f,
+    +1f, -1f, -1f,
+    # Second rectangle (offset to the right)
+    +0f, -2f, +3f,
+    -2f, +3f, +2f,
+    +3f, +2f, +0f,
+    +2f, +0f, -2f
+  ].mapIt(it * 0.3'f32)
 
 var
   program: GLuint
@@ -108,9 +112,10 @@ proc display(pos, neg: Vec4) =
   glUniform4f(posColorLocation, pos.x, pos.y, pos.z, pos.w)
   glUniform4f(negColorLocation, neg.x, neg.y, neg.z, neg.w)
 
-  glDrawArrays(GL_TRIANGLES, 0, 6)
+  # Draw both rectangles
+  glDrawArrays(GL_TRIANGLES, 0, 12)
 
-  # Swap buffers (this will display the red color)
+  # Swap buffers
   window.swapBuffers()
 
 proc run*(title, shader: string, pos: Vec4 = vec4(1.0, 1.0, 1.0, 1.0), neg: Vec4 = vec4(0.0, 0.0, 0.0, 1.0)) =
@@ -121,7 +126,8 @@ proc run*(title, shader: string, pos: Vec4 = vec4(1.0, 1.0, 1.0, 1.0), neg: Vec4
     vPos: Vec3,
   ) =
     gl_Position = vec4(vPos.x, vPos.y, 0.0, 1.0)
-    uv.x = gl_Position.x * 500
+    # Scale UV coordinates to fit both rectangles
+    uv.x = gl_Position.x * 250  # Reduced from 500 to fit both rectangles
     uv.y = gl_Position.y * 500
 
   const
