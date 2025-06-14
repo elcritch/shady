@@ -29,12 +29,16 @@ proc dropShadow(sd: float32, stdDevFactor: float32, spread: float32, factor: flo
   return f
 
 proc roundedBoxShader(fragColor: var Vec4, uv: Vec2, posColor: Uniform[Vec4], negColor: Uniform[Vec4], time: Uniform[float32]) =
-  # Center the UV coordinates
-  let p = uv - vec2(0, 0)
+  # Determine which rectangle we're in and calculate its center
+  let rectWidth = 250.0  # This matches the UV scaling in demo.nim
+  let rectIndex = floor(uv.x / rectWidth)
+  let rectCenter = vec2(rectWidth * (rectIndex + 0.5), 0.0)
   
-  # fragColor = posColor
+  # Center the UV coordinates relative to the current rectangle
+  let p = uv - rectCenter
+  
   # Box size and corner radius
-  let boxSize = vec2(50.0, 50.0)
+  let boxSize = vec2(100.0, 100.0)
   let radius = vec4(20.0, 20.0, 20.0, 20.0)  # All corners have same radius
   
   # Calculate distance
