@@ -47,7 +47,7 @@ proc roundedBoxShader(
 
   # Box size and corner radius
   let boxSize = vec2(100.0, 100.0)
-  let radius = vec4(20.0, 20.0, 20.0, 20.0) # All corners have same radius
+  let radius = vec4(10.0, 20.0, 30.0, 40.0) # All corners have same radius
 
   # Calculate distance
   let sd = sdRoundedBox(p, boxSize, radius)
