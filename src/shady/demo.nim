@@ -9,11 +9,11 @@ let
     +1f, +1f, -1f,
     +1f, -1f, -1f,
     # Second rectangle (offset to the right)
-    +0f, -2f, +3f,
-    -2f, +3f, +2f,
-    +3f, +2f, +0f,
-    +2f, +0f, -2f
-  ].mapIt(it * 0.3'f32)
+    # +0f, -2f, +3f,
+    # -2f, +3f, +2f,
+    # +3f, +2f, +0f,
+    # +2f, +0f, -2f
+  ].mapIt(it * 1.0'f32)
 
 var
   program: GLuint
